@@ -33,7 +33,7 @@ const ForgotPassword = () => {
                 ...SummaryApi.forgot_password,
                 headers: {
                     'Content-Type': 'application/json'
-                  },
+                },
                 data: data
             })
             console.log("Email data:", data);
@@ -43,8 +43,10 @@ const ForgotPassword = () => {
                 toast.error(response.data.message)
             } else {
                 toast.success(response.data.message)
+                navigate('/verification-otp', {
+                    state: data
+                })
                 setData({ email: "" })
-                navigate('/verification-otp')
             }
         } catch (error) {
             AxiosToastError(error)
