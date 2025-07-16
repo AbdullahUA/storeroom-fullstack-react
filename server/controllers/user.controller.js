@@ -10,6 +10,8 @@ import uploadImageCloudinary from "../utils/uploadImageCloudinary.js";
 import generatedOtp from "../utils/generatedOtp.js";
 import forgotPasswordTemplate from "../utils/forgotPasswordTemplate.js";
 import jwt from "jsonwebtoken";
+import { response } from "express";
+import { use } from "react";
 
 export async function registerUserController(req, res) {
   try {
@@ -153,6 +155,9 @@ export async function loginController(req, res) {
       secure: true,
     };
 
+    const updateUSer = await UserModel.findByIdAndUpdate(user?._id, {
+      last_login_date: new Date(),
+    });
     // set the cookies in the response
     res.cookie("accessToken", accessToken, cookiesOption);
     res.cookie("refreshToken", refreshToken, cookiesOption);
@@ -226,6 +231,7 @@ export async function logoutController(req, res) {
 // upload user image
 
 export async function uploadUserImage(req, res) {
+  console.log("hello");
   try {
     const userId = req.userId; // which is coming from the auth middleware
     if (!userId) {
@@ -256,12 +262,9 @@ export async function uploadUserImage(req, res) {
     }
 
     const uploadImage = await uploadImageCloudinary(image);
-    const updatedUser = await UserModel.updateOne(
-      { _id: userId },
-      {
-        avatar: uploadImage.url,
-      }
-    );
+    const updatedUser = await UserModel.findByIdAndUpdate(userId, {
+      avatar: uploadImage.url,
+    });
     if (!updatedUser) {
       return res.status(400).json({
         message: "Unable to upload image",
@@ -273,7 +276,10 @@ export async function uploadUserImage(req, res) {
       message: "Image uploaded successfully",
       error: false,
       success: true,
-      data: uploadImage,
+      data: {
+        _id:user._id,
+        avatar: uploadImage.url
+      }
     });
   } catch (err) {
     return res.status(500).json({
@@ -436,6 +442,11 @@ export async function verifyOtp(req, res) {
         success: false,
       });
     }
+    // if the otp is valid and not expired, then we can reset the password
+    const updatedUser = await UserModel.findByIdAndUpdate(user._id, {
+      forgot_password_otp: "",
+      forgot_password_expiry: "",
+    });
 
     return res.status(200).json({
       message: "OTP verification successful",
@@ -509,7 +520,7 @@ export async function resetPassword(req, res) {
 export async function refreshTokenController(req, res) {
   try {
     const refreshToken =
-      req.cookies.refreshToken || req?.header?.authorization?.split(" ")[1];
+      req.cookies.refreshToken || req?.headers?.authorization?.split(" ")[1];
     if (!refreshToken) {
       return res.status(400).json({
         message: "Refresh token not found in cookies or header",
@@ -559,6 +570,28 @@ export async function refreshTokenController(req, res) {
   } catch (err) {
     return res.status(500).json({
       message: err.message || err,
+      error: true,
+      success: false,
+    });
+  }
+}
+
+// login user details
+export async function userDetails(req, res) {
+  try {
+    const userId = req.userId;
+    const user = await UserModel.findById(userId).select(
+      "-password -refreshToken"
+    );
+    return res.json({
+      message: "user details",
+      data: user,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "user Details are not fetched",
       error: true,
       success: false,
     });

@@ -6,7 +6,7 @@ const categorySchema = new mongoose.Schema({
         default: ""
     },
     image: {
-        type: string,
+        type: String,
         default: ""
     },
     
@@ -14,5 +14,5 @@ const categorySchema = new mongoose.Schema({
     timestamps: true
 })
 
-const categoryModel = mongoose.model("category", categorySchema);
-export default categoryModel;   
+const CategoryModel = mongoose.model("category", categorySchema);
+export default CategoryModel;   
