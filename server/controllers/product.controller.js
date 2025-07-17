@@ -43,7 +43,7 @@ export const createProductController = async (req, res) => {
       more_details,
     });
 
-    console.log('productsssss', product)
+    console.log("productsssss", product);
     const saveProduct = await product.save();
     return res.json({
       message: "Product created Successfully",
@@ -72,7 +72,8 @@ export const getProductController = async (req, res) => {
       limit = 10;
     }
 
-    const query = search ? {
+    const query = search
+      ? {
           $text: {
             $search: search,
           },
@@ -102,5 +103,32 @@ export const getProductController = async (req, res) => {
   }
 };
 
+export const getProductByCategory = async (req, res) => {
+  try {
+    const { id } = req.body;
+    if (!id) {
+      return res.status(400).json({
+        message: "Provide category id",
+        error: true,
+        success: false,
+      });
+    }
 
+    const products = await ProductModel.find({
+      category: { $in: id },
+    }).limit(15);
 
+    return res.json({
+      message: "Category wise products",
+      data: products,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};

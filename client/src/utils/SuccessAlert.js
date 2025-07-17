@@ -1,11 +1,14 @@
+import Swal from "sweetalert2";
+
 const SuccessAlert = (title) => {
   const alert = Swal.fire({
     icon: "success",
     title: title,
+    confirmButtonColor: "#00b050",
+    timer: 2000,
   });
 
-  return alert
+  return alert;
 };
 
-
-export default SuccessAlert
+export default SuccessAlert;

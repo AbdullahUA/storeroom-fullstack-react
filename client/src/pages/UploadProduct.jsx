@@ -105,6 +105,7 @@ const UploadProduct = () => {
       })
       const { data: responseData } = response
       if (responseData.success) {
+        SuccessAlert(responseData.message)
         setData({
           name: '',
           image: [],
@@ -117,7 +118,6 @@ const UploadProduct = () => {
           description: '',
           more_details: {}
         })
-        SuccessAlert(responseData.message)
       }
 
     } catch (error) {
