@@ -10,10 +10,13 @@ const Home = () => {
   const loadingCategory = useSelector(state => state.product.loadingCategory)
   const categoryData = useSelector(state => state.product.allCategory)
   const subCategoryData = useSelector(state => state.product.allSubCategory)
+
+  console.log('Loading category' + loadingCategory)
+  console.log('Sub category', subCategoryData)
   const navigate = useNavigate()
 
   const handleRedirectProductListPage = (id, cat) => {
-
+    console.log("id and cat", id, cat)
     const subCategory = subCategoryData.find(sub => {
       const filteredData = sub.category.some(c => {
         return c._id == id
@@ -70,13 +73,16 @@ const Home = () => {
         }
       </div>
 
-      {/* display category wise product */}
+      {/* display category wise products */}
 
       {
         categoryData.map((c, index) => {
+
+
           return (
 
-            <CategoryWiseProducts key={c?._id+"CategoryWiseProducts"} id={c?._id} name={c?.name} />
+            <CategoryWiseProducts key={c?._id + "CategoryWiseProducts"} id={c?._id} name={c?.name} />
+
           )
         })
       }

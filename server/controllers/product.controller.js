@@ -115,7 +115,7 @@ export const getProductByCategory = async (req, res) => {
     }
 
     const products = await ProductModel.find({
-      category: { $in: id },
+      category: { $in: [id] },
     }).limit(15);
 
     return res.json({
@@ -132,3 +132,56 @@ export const getProductByCategory = async (req, res) => {
     });
   }
 };
+
+export const getProductByCategoryIdAndSubCategoryId = async (req, res) => {
+  try {
+    const { categoryId, subCategoryId, page, limit } = req.body;
+
+    if (!categoryId || !subCategoryId) {
+      return res.status(400).json({
+        message: "Provide categoryId and subCategoryId",
+        error: true,
+        success: false,
+      });
+    }
+
+    if (!page) {
+      page = 1;
+    }
+
+    if (!limit) {
+      limit = 10;
+    }
+
+    const query = {
+      categoryId: { $in: { categoryId } },
+      subCategoryId: { $in: { subCategoryId } },
+    };
+
+    const skip = (page - 1) * limit;
+
+    const [data, dataCount] = await new Promise.all([
+      ProductModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit),
+      ProductModel.countDocuments(query),
+    ]);
+
+    return res.json({
+      message: "Sub category wise Product list",
+      data: data,
+      totalCount: dataCount,
+      success: true,
+      error: false,
+    });
+
+
+
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+

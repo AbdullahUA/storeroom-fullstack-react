@@ -88,6 +88,10 @@ const SummaryApi = {
      getProductByCategory:{
         url:'/api/product/get-product-by-category',
         method:'POST'
+    },
+    getProductByCategoryAndSubCategory:{
+        url:'/api/product/get-product-by-category-and-subcategory',
+        method:'POST'
     }
 }
 
