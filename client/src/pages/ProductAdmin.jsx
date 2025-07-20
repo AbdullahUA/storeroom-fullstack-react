@@ -11,7 +11,7 @@ import { IoSearchOutline } from 'react-icons/io5'
 
 const ProductAdmin = () => {
 
-    const [productData, setProductData] = useState[{}]
+    const [productData, setProductData] = useState([])
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
     const [totalPageCount, setTotalPageCount] = useState(1)
@@ -107,7 +107,7 @@ const ProductAdmin = () => {
                         {
                             productData.map((page, index) => {
                                 return (
-                                    <ProductCardAdmin data={p} />
+                                    <ProductCardAdmin data={page} />
                                 )
                             })
                         }

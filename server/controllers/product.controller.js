@@ -154,13 +154,13 @@ export const getProductByCategoryIdAndSubCategoryId = async (req, res) => {
     }
 
     const query = {
-      categoryId: { $in: { categoryId } },
-      subCategoryId: { $in: { subCategoryId } },
+      category: { $in: [categoryId] },
+      subCategory: { $in: [subCategoryId] },
     };
 
     const skip = (page - 1) * limit;
 
-    const [data, dataCount] = await new Promise.all([
+    const [data, dataCount] = await Promise.all([
       ProductModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit),
       ProductModel.countDocuments(query),
     ]);
@@ -172,9 +172,6 @@ export const getProductByCategoryIdAndSubCategoryId = async (req, res) => {
       success: true,
       error: false,
     });
-
-
-
   } catch (error) {
     return res.status(500).json({
       message: error.message || error,
@@ -184,4 +181,30 @@ export const getProductByCategoryIdAndSubCategoryId = async (req, res) => {
   }
 };
 
+export const getProductDetails = async (req, res) => {
+  try {
+    const { productId } = req.body;
 
+    if (!productId) {
+      return res.status(400).json({
+        message: "Provide productId",
+        error: true,
+        success: false,
+      });
+    }
+
+    const product = await ProductModel.findOne({ _id: productId });
+    return res.json({
+      message: "product Details",
+      data: product,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};

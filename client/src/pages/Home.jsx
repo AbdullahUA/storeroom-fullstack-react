@@ -26,7 +26,6 @@ const Home = () => {
     const url = `/${validURLConvert(cat)}-${id}/${validURLConvert(subCategory.name)}-${subCategory._id}`
 
     navigate(url)
-    console.log(url)
 
   }
 
