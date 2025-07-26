@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AxiosToastError from '../utils/AxiosToastError.js'
 import Axios from '../utils/Axios.js'
 import SummaryApi from '../common/SummaryApi.js'
 import CardLoading from './CardLoading.jsx'
 import CardProduct from './CardProduct.jsx'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6'
+import { validURLConvert } from '../utils/validURLConvert.js'
+import { useSelector } from 'react-redux'
 
 
 const CategoryWiseProducts = ({ id, name }) => {
@@ -13,6 +15,9 @@ const CategoryWiseProducts = ({ id, name }) => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const containerRef = useRef()
+    const subCategoryData = useSelector(state => state.product.allSubCategory)
+    const loadingCardNumber = new Array(6).fill(null)
+
 
 
     const fetchCategoryWiseProduct = async () => {
@@ -30,7 +35,6 @@ const CategoryWiseProducts = ({ id, name }) => {
             if (responseData.success) {
                 setLoading(false)
                 setData(responseData.data)
-                console.log('SetData', data)
             }
 
         } catch (error) {
@@ -46,7 +50,6 @@ const CategoryWiseProducts = ({ id, name }) => {
         fetchCategoryWiseProduct();
     }, []);
 
-    const loadingCardNumber = new Array(6).fill(null)
 
     const handleScrollRight = () => {
         containerRef.current.scrollLeft += 200
@@ -54,12 +57,29 @@ const CategoryWiseProducts = ({ id, name }) => {
     const handleScrollLeft = () => {
         containerRef.current.scrollLeft -= 200
     }
+
+
+    const handleRedirectProductListPage = () => {
+    
+        const subCategory = subCategoryData.find(sub => {
+            const filteredData = sub.category.some(c => {
+                return c._id == id
+            })
+            return filteredData ? true : null
+        })
+         if (!subCategory) return ''
+        const url = `/${validURLConvert(name)}-${id}/${validURLConvert(subCategory?.name)}-${subCategory?._id}`
+        return url
+        
+    }
+    const redirectURL=  handleRedirectProductListPage()
+
     return (
         <div>
 
             <div className='container mx-auto p-4 flex items-center justify-between gap-4'>
                 <h3 className='font-semibold text-lg md:text-xl'>{name}</h3>
-                <Link to='' className='text-green-600 hover:text-green-400'> See All</Link>
+                <Link to={redirectURL} className='text-green-600 hover:text-green-400'> See All</Link>
             </div>
             <div className='relative flex items-center'>
                 <div className='flex gap-4 md:gap-6 lg:gap-8 container mx-auto p-4 overflow-x-scroll scrollbar-none scroll-smooth' ref={containerRef} >

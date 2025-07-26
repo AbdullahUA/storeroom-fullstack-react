@@ -1,3 +1,5 @@
+import { updateProductDetails } from "../../../server/controllers/product.controller";
+
 export const baseUrl = "http://localhost:8080";
 
 const SummaryApi = {
@@ -94,8 +96,37 @@ const SummaryApi = {
     method: "POST",
   },
   getProductDetails: {
-    url:"/api/product/get-product-details",
-    method:"POST"
+    url: "/api/product/get-product-details",
+    method: "POST",
+  },
+  updateProductDetails: {
+    url: "api/product/update-product-details",
+    method: "PUT",
+  },
+  deleteProduct: {
+    url: "api/product/delete-product",
+    method: "DELETE",
+  },
+  searchProduct: {
+    url: "api/product/search-product",
+    method: "POST",
+  },
+
+  addToCart: {
+    url: "api/cart/create",
+    method: "POST",
+  },
+  getCartItem: {
+    url: "/api/cart/get",
+    method: "GET",
+  },
+  updateCartItemQty: {
+    url: "/api/cart/update-qty",
+    method: "PUT",
+  },
+  deleteCartItem: {
+    url: "/api/cart/delete-cart-item",
+    method: "DELETE",
   },
 };
 

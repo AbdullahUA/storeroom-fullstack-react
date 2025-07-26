@@ -11,8 +11,8 @@ const Home = () => {
   const categoryData = useSelector(state => state.product.allCategory)
   const subCategoryData = useSelector(state => state.product.allSubCategory)
 
-  console.log('Loading category' + loadingCategory)
-  console.log('Sub category', subCategoryData)
+  // console.log('Loading category' + loadingCategory)
+  // console.log('Sub category', subCategoryData)
   const navigate = useNavigate()
 
   const handleRedirectProductListPage = (id, cat) => {
@@ -80,7 +80,9 @@ const Home = () => {
 
           return (
 
-            <CategoryWiseProducts key={c?._id + "CategoryWiseProducts"} id={c?._id} name={c?.name} />
+            <CategoryWiseProducts key={c?._id + "CategoryWiseProducts"} 
+            id={c?._id} 
+            name={c?.name} />
 
           )
         })

@@ -82,7 +82,11 @@ export const getProductController = async (req, res) => {
 
     const skip = (page - 1) * limit;
     const [data, totalCount] = await Promise.all([
-      ProductModel.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      ProductModel.find()
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate("category subCategory"),
       ProductModel.countDocuments(query),
     ]);
 
@@ -199,6 +203,115 @@ export const getProductDetails = async (req, res) => {
       data: product,
       error: false,
       success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const updateProductDetails = async (req, res) => {
+  try {
+    const { _id } = req.body;
+
+    if (!_id) {
+      return res.status(400).json({
+        message: "provide product_id",
+        error: true,
+        success: false,
+      });
+    }
+
+    const updatedProduct = await ProductModel.updateOne(
+      { _id: _id },
+      {
+        ...req.body,
+      }
+    );
+    res.json({
+      message: "Product updated successfully",
+      data: updatedProduct,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const deleteProduct = async (req, res) => {
+  try {
+    const { _id } = req.body;
+
+    if (!_id) {
+      return res.status(400).json({
+        message: "provide product_id",
+        error: true,
+        success: false,
+      });
+    }
+
+    const afterDeleteProduct = await ProductModel.deleteOne({ _id: _id });
+    res.json({
+      message: "Product deleted successfully",
+      data: afterDeleteProduct,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const searchProduct = async (req, res) => {
+  
+  try {
+    let { search, page, limit } = req.body;
+    if (!page) {
+      page = 1;
+    }
+
+    if (!limit) {
+      limit = 10;
+    }
+
+    const query = search
+      ? {
+          $text: {
+            $search: search
+          },
+        }
+      : {};
+    const skip = (page - 1) * limit;
+    const [data, dataCount] = await Promise.all([
+      ProductModel.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate("category subCategory"),
+      ProductModel.countDocuments(query),
+    ]);
+
+    return res.json({
+      message: "Product data",
+      error: false,
+      success: true,
+      data: data,
+      totalCount: dataCount,
+      totalPage: Math.ceil(dataCount / limit),
+      page: page,
+      limit: limit,
     });
   } catch (error) {
     return res.status(500).json({

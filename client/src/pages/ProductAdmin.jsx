@@ -82,7 +82,7 @@ const ProductAdmin = () => {
     }, [search])
 
     return (
-        <section>
+        <section className='bg-neutral-50'>
             <div className='p-2 bg-white shadow-md flex items-center justify-between gap-4'>
 
                 <h2 className='font-semibold'>Product</h2>
@@ -107,7 +107,7 @@ const ProductAdmin = () => {
                         {
                             productData.map((page, index) => {
                                 return (
-                                    <ProductCardAdmin data={page} />
+                                    <ProductCardAdmin key={page+index+'productdata'} fetchProductData={fetchProductData} data={page} />
                                 )
                             })
                         }
@@ -122,7 +122,7 @@ const ProductAdmin = () => {
 
 
             </div>
-
+            
         </section>
     )
 }

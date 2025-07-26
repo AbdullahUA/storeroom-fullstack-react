@@ -7,10 +7,12 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useEffect } from 'react';
 import fetchUserDetails from './utils/fetchUserDetails';
 import { setUserDetails } from './store/userSlice'
-import { setAllCategory,setAllSubCategory,setLoadingCategory } from './store/productSlice';
+import { setAllCategory, setAllSubCategory, setLoadingCategory } from './store/productSlice';
 import { useDispatch } from 'react-redux';
-import SummaryApi from './common/SummaryApi';
-import Axios from './utils/Axios';
+import SummaryApi from './common/SummaryApi.js';
+import Axios from './utils/Axios.js';
+import { handleAddItemCart } from './store/cartProduct.js';
+import GlobalProvider from './provider/GlobalProvider.jsx';
 
 function App() {
 
@@ -62,21 +64,25 @@ function App() {
 
   }
 
+  
 
   useEffect(() => {
     fetchCategory()
     fetchUser()
     fetchSubCategory()
+
   }, [])
 
   return (
     <>
+    <GlobalProvider>
       <Header />
       <main className='min-h-[78vh]'>
         <Outlet />
       </main>
       <Footer />
       <Toaster />
+    </GlobalProvider>
     </>
   )
 }

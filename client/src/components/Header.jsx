@@ -9,6 +9,8 @@ import { useSelector } from 'react-redux';
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import { useState } from 'react';
 import UserMenu from './UserMenu';
+import { useEffect } from 'react';
+import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees';
 
 
 
@@ -17,23 +19,41 @@ const Header = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const user = useSelector((state) => state?.user)
+  const cartItem = useSelector(state => state?.cartItem?.cart)
   const [openUserMenu, setOpenUserMenu] = useState(false)
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [totalQty, setTotalQty] = useState(0)
 
   const isSearchPage = location.pathname === '/search'
 
   const redirectToLoginPage = () => {
     navigate('/login')
   }
-const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = () => {
     setOpenUserMenu(false)
   }
 
   const handleMobileUser = () => {
-    if(!user?._id) {
+    if (!user?._id) {
       navigate('/login')
       return
+    }
   }
-}
+
+
+  useEffect(() => {
+    const qty = cartItem.reduce((prev, curr) => {
+      return prev + curr.quantity
+    }, 0)
+    setTotalQty(qty)
+
+    const tPrice = cartItem.reduce((prev,curr) => {
+      return prev + curr.productId.price * curr.quantity
+    },0)
+
+    setTotalPrice(tPrice)
+  }, [cartItem])
+
   return (
     <header className='h-29 lg:h-28 lg:shadow-md sticky top-0 z-40 flex flex-col justify-center bg-white'>
       {
@@ -78,7 +98,7 @@ const handleCloseUserMenu = () => {
                       openUserMenu && (
                         <div className='absolute right-0 top-16'>
                           <div className='bg-white rounded p-4 min-w-52 lg:shadow-lg'>
-                            <UserMenu  close={handleCloseUserMenu}/>
+                            <UserMenu close={handleCloseUserMenu} />
 
                           </div>
                         </div>
@@ -97,7 +117,16 @@ const handleCloseUserMenu = () => {
                     <BsCart4 size={28} />
                   </div>
                   <div className='font-semibold'>
-                    <p>My cart</p>
+                    {
+                      cartItem[0] ? (
+                        <div>
+                          <p>{totalQty} Items</p>
+                          <p>{DisplayPriceInRupees(totalPrice)}</p>
+                        </div>) : (
+                        <p>My cart</p>
+                      )
+
+                    }
                   </div>
                 </button>
               </div>

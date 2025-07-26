@@ -9,6 +9,8 @@ import Divider from '../components/divider'
 import image1 from '../assets/minute_delivery.png'
 import image2 from '../assets/Best_Prices_Offers.png'
 import image3 from '../assets/Wide_Assortment.png'
+import { priceWithDiscount } from '../../../server/utils/PriceWithDiscount'
+import AddToCartButton from '../components/AddToCartButton'
 
 const ProductDisplayPage = () => {
 
@@ -101,7 +103,28 @@ const ProductDisplayPage = () => {
             </button>
           </div>
         </div>
+        <div className='my-2 hidden lg:grid gap-3'>
+          <div>
+            <p className='font-semibold'>Description</p>
+            <p className='text-base'>{data.description}</p>
+          </div>
+          <div>
+            <p className='font-semibold'>Unit</p>
+            <p className='text-base'>{data.unit}</p>
+          </div>
 
+
+          {
+            data?.more_details && Object.keys(data?.more_details).map((el, index) => {
+              return (
+                <div>
+                  <p className='font-semibold'>{el}</p>
+                  <p className='text-base'>{data.more_details[el]}</p>
+                </div>
+              )
+            })
+          }
+        </div>
       </div>
       <div className='p-4 lg:pl-7 text-base lg:text-lg'>
         <p className='bg-green-300 w-fit px-2 rounded' >10 min</p>
@@ -110,11 +133,36 @@ const ProductDisplayPage = () => {
         <Divider />
         <div>
           <p>Price</p>
-          <div className='border border-green-600 px-4 py-2 rouded bg-green-50 w-fit'>
-            <p className='font-semibold text-lg lg:text-xl'>{DisplayPriceInRupees(data.price)}</p>
+          <div className='flex items-center gap-2  lg:gap-4'>
+            <div className='border border-green-600 px-4 py-2 rounded bg-green-50 w-fit'>
+              <p className='font-semibold text-lg lg:text-xl'>{DisplayPriceInRupees(priceWithDiscount(data.price, data.discount))}</p>
+            </div>
+            {
+              data.discount !== 0 && (
+
+                <p className='line-through'>{DisplayPriceInRupees(data.price)}</p>
+              )
+            }
+            {
+              data.discount !== 0 && (
+
+                <p className='font-bold text-green-600 lg:text-2xl'>{data.discount}%  <span className='text-base text-neutral-600'>Discount</span></p>
+              )
+            }
           </div>
         </div>
-        <button className='my-4 px-4 py-1 bg-green-400 hover:bg-green-500 hover:text-white rounded' >Add</button>
+
+        {
+          data.stock === 0 ? (
+            <p className='text-lg text-red-500 my-2' >Out of Stock</p>
+          ) : (
+
+            // <button className='my-4 px-4 py-1 bg-green-400 hover:bg-green-500 hover:text-white rounded' >Add</button>
+            <div className='my-4'>
+              <AddToCartButton data={data} />
+            </div>
+          )
+        }
         <h2 className='font-semibold'>Why shop from Storeroom?</h2>
         <div>
           <div className='flex items-center gap-4 my-4'>
