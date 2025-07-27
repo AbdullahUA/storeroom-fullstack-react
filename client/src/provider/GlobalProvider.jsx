@@ -1,17 +1,23 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import Axios from "../utils/Axios.js";
 import SummaryApi from "../common/SummaryApi.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleAddItemCart } from "../store/cartProduct.js";
 import { useEffect } from "react";
 import AxiosToastError from '../utils/AxiosToastError.js'
 import toast from "react-hot-toast";
+import { priceWithDiscount } from "../../../server/utils/PriceWithDiscount.js";
 
 export const GlobalContext = createContext(null);
 export const useGlobalContext = () => useContext(GlobalContext);
 
 const GlobalProvider = ({ children }) => {
   const dispatch = useDispatch();
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [notDiscountTotalPrice, setNotDiscountTotalPrice] = useState(0)
+  const [totalQty, setTotalQty] = useState(0)
+  const cartItem = useSelector(state => state?.cartItem?.cart)
+
 
 
   const fetchCartItem = async () => {
@@ -42,11 +48,13 @@ const GlobalProvider = ({ children }) => {
 
       const { data: responseData } = response
       if (responseData.success) {
-        toast.success(responseData.message)
+        // toast.success(responseData.message)
         fetchCartItem()
+        return responseData
       }
     } catch (error) {
       AxiosToastError(error)
+      return error
     }
   }
 
@@ -59,8 +67,8 @@ const GlobalProvider = ({ children }) => {
         }
       })
 
-      const {data:responseData}=response
-      if(responseData.success){
+      const { data: responseData } = response
+      if (responseData.success) {
         toast.success(responseData.message)
         fetchCartItem()
       }
@@ -74,7 +82,34 @@ const GlobalProvider = ({ children }) => {
     fetchCartItem()
   }, [])
 
-  return <GlobalContext.Provider value={{ fetchCartItem, updateCartItem,deleteCartItem }}>
+  useEffect(() => {
+    const qty = cartItem.reduce((prev, curr) => {
+      return prev + curr.quantity
+    }, 0)
+    setTotalQty(qty)
+
+    const tPrice = cartItem.reduce((prev, curr) => {
+      const priceAfterDiscount = priceWithDiscount(curr?.productId?.price, curr?.productId?.discount)
+      return prev + priceAfterDiscount * curr.quantity
+    }, 0)
+
+    setTotalPrice(tPrice)
+
+    const notDiscountPrice = cartItem.reduce((prev, curr) => {
+      return prev + (curr?.productId?.price * curr.quantity)
+    }, 0)
+    setNotDiscountTotalPrice(notDiscountPrice)
+  }, [cartItem])
+
+  return <GlobalContext.Provider value={{
+    fetchCartItem,
+    updateCartItem,
+    deleteCartItem,
+    totalPrice,
+    totalQty,
+    notDiscountTotalPrice
+
+  }}>
     {children}
   </GlobalContext.Provider>;
 };

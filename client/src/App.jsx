@@ -1,18 +1,20 @@
 
 import { Outlet } from 'react-router-dom'
 import './App.css'
-import Header from './components/header'
-import Footer from './components/footer'
+import Header from './components/Header.jsx'
+import Footer from './components/Footer.jsx'
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect } from 'react';
-import fetchUserDetails from './utils/fetchUserDetails';
-import { setUserDetails } from './store/userSlice'
-import { setAllCategory, setAllSubCategory, setLoadingCategory } from './store/productSlice';
+import fetchUserDetails from './utils/fetchUserDetails.js';
+import { setUserDetails } from './store/userSlice.js'
+import { setAllCategory, setAllSubCategory, setLoadingCategory } from './store/productSlice.js';
 import { useDispatch } from 'react-redux';
 import SummaryApi from './common/SummaryApi.js';
 import Axios from './utils/Axios.js';
 import { handleAddItemCart } from './store/cartProduct.js';
 import GlobalProvider from './provider/GlobalProvider.jsx';
+import { FaCartShopping } from 'react-icons/fa6';
+import CartMobileLink from './components/CartMobileLink.jsx';
 
 function App() {
 
@@ -64,7 +66,7 @@ function App() {
 
   }
 
-  
+
 
   useEffect(() => {
     fetchCategory()
@@ -75,14 +77,15 @@ function App() {
 
   return (
     <>
-    <GlobalProvider>
-      <Header />
-      <main className='min-h-[78vh]'>
-        <Outlet />
-      </main>
-      <Footer />
-      <Toaster />
-    </GlobalProvider>
+      <GlobalProvider>
+        <Header />
+        <main className='min-h-[78vh]'>
+          <Outlet />
+        </main>
+        <Footer />
+        <Toaster />
+        <CartMobileLink />
+      </GlobalProvider>
     </>
   )
 }
