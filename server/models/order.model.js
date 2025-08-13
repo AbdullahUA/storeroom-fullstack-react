@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema({
     product_details:  {
 
         name:String,
-        Image:Array,
+        image:Array,
         },
     payment_Id:{
         type:String,

@@ -39,7 +39,6 @@ export const getSubCategoryController = async (req, res) => {
       .find()
       .sort({ createdAt: -1 })
       .populate("category");
-    console.log("SubCategory Data:", data);
     return res.status(200).json({
       success: true,
       message: "SubCategories fetched successfully",

@@ -144,10 +144,18 @@ const SummaryApi = {
     url: "/api/address/delete",
     method: "DELETE",
   },
-  CashOnDeliveryOrderController: {
+  CashOnDeliveryOrder: {
     url: "/api/order/cash-on-delivery",
     method: "POST",
   },
+  payment_url:{
+    url:'/api/order/checkout',
+    method:'POST'
+  },
+  getOrderItems:{
+    url:'/api/order/order-list',
+    method:'GET'
+  }
 };
 
 export default SummaryApi;
