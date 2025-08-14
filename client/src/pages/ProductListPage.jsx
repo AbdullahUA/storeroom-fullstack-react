@@ -93,7 +93,7 @@ const ProductListPage = () => {
                       className='w-14 lg:h-14 lg:w-12 h-full object-scale-down'
                     />
                   </div>
-                  <p className='-mt-6 lg:mt-0 text-xs text-center lg:text-base lg:text-left' >{s.name}</p>
+                  <p className='-mt-5 lg:mt-0 text-xs text-center lg:text-base lg:text-left' >{s.name}</p>
                 </Link>
               )
             })
@@ -107,7 +107,8 @@ const ProductListPage = () => {
           </div>
           <div>
             <div className='min-h-[80vh] max-h-[80vh] overflow-y-auto relative'>
-              <div className='grid grid-cols-1 p-4 md:grid-cols-3 lg:grid-cols-5 gap-4 '>
+              <div className='grid p-4 gap-4 justify-items-center
+               grid-cols-[repeat(auto-fit,minmax(200px,1fr))]'>
                 {
                   data.map((p, index) => {
 

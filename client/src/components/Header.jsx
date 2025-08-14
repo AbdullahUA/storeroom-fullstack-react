@@ -40,6 +40,7 @@ const Header = () => {
       navigate('/login')
       return
     }
+    navigate('/user')
   }
 
   // total item and total price
@@ -64,8 +65,8 @@ const Header = () => {
             {/* {Logo} */}
             <div className='h-full'>
               <Link to={"/"} className=' h-full flex justify-center items-center '>
-                <img src={logo} width={200} height={60} alt='logo' className='hidden lg:block' />
-                <img src={logo} width={120} height={60} alt='logo' className='lg:hidden' />
+                <img src={logo} width={250} height={60} alt='logo' className='hidden lg:block mt-3' />
+                <img src={logo} width={180} height={60} alt='logo' className='lg:hidden ml-1' />
               </Link>
             </div>
             {/* {Search bar} */}
@@ -78,7 +79,7 @@ const Header = () => {
             <div>
               {/* for Mobile version */}
               <button className='text-neutral-600 lg:hidden' onClick={handleMobileUser} >
-                <FaUserCircle size={33} />
+                <FaUserCircle size={38} className='mr-2' />
               </button>
               {/* for desktop version */}
               <div className='hidden lg:flex items-center gap-10'>

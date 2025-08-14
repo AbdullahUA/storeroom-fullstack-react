@@ -136,12 +136,14 @@ const GlobalProvider = ({ children }) => {
     }
   }
 
-  useEffect(() => {
-    fetchCartItem()
-    handleLogout()
-    fetchAddress()
-    fetchOrder()
-  }, [user])
+   useEffect(() => {
+    
+      fetchCartItem();
+      handleLogout()
+      fetchAddress();
+      fetchOrder();
+    
+  }, [user]);
 
 
 
@@ -153,7 +155,8 @@ const GlobalProvider = ({ children }) => {
     totalPrice,
     totalQty,
     notDiscountTotalPrice,
-    fetchOrder
+    fetchOrder,
+    handleLogout,
 
   }}>
     {children}

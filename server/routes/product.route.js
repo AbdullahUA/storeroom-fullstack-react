@@ -20,7 +20,7 @@ productRouter.post(
   "/get-product-by-category-and-subcategory",
   getProductByCategoryIdAndSubCategoryId
 );
-productRouter.post("/get-product-details",auth, getProductDetails);
+productRouter.post("/get-product-details", getProductDetails);
 productRouter.put("/update-product-details", auth,admin, updateProductDetails);
 productRouter.delete("/delete-product", auth,admin, deleteProduct);
 productRouter.post('/search-product',searchProduct)
