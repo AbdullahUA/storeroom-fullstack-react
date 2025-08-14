@@ -6,7 +6,7 @@ import { handleAddItemCart } from "../store/cartProduct.js";
 import { useEffect } from "react";
 import AxiosToastError from '../utils/AxiosToastError.js'
 import toast from "react-hot-toast";
-import { priceWithDiscount } from "../../../server/utils/PriceWithDiscount.js";
+import { priceWithDiscount } from "../utils/PriceWithDiscount.js";
 import { handleAddAddress } from "../store/addressSlice.js";
 import { setOrder } from "../store/orderSlice.js";
 

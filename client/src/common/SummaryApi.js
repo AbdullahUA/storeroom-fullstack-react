@@ -1,5 +1,3 @@
-import { updateProductDetails } from "../../../server/controllers/product.controller";
-
 export const baseUrl = import.meta.env.VITE_API_URL
 
 const SummaryApi = {

@@ -9,7 +9,7 @@ import Divider from '../components/Divider.jsx'
 import image1 from '../assets/minute_delivery.png'
 import image2 from '../assets/Best_Prices_Offers.png'
 import image3 from '../assets/Wide_Assortment.png'
-import { priceWithDiscount } from '../../../server/utils/PriceWithDiscount'
+import { priceWithDiscount } from '../utils/PriceWithDiscount.js'
 import AddToCartButton from '../components/AddToCartButton'
 
 const ProductDisplayPage = () => {
