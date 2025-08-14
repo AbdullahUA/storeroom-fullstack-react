@@ -48,7 +48,7 @@ const AddAddress = ({ close }) => {
                 <div className='font-semibold flex justify-between items-center gap-4'>
                 <h2 className='font-semibold'>Add Address</h2>
 
-                    <button>
+                    <button onClick={close}>
                         <IoClose size={25}/>
                     </button>
                 </div>

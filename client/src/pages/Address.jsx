@@ -79,7 +79,7 @@ const Address = () => {
           })
 
         }
-        < div onClick={() => setOpenAddress(true)} className='h-16 bg-blue-100 hover:bg-blue-200 border-2 border-dotted border-blue-400 flex justify-center items-center'>
+        < div onClick={() => setOpenAddress(true)}  className='h-16 bg-blue-100 hover:bg-blue-200 border-2 border-dotted border-blue-400 flex justify-center items-center cursor-pointer'>
           Add address
         </div>
 
