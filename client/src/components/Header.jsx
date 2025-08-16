@@ -43,19 +43,6 @@ const Header = () => {
     navigate('/user')
   }
 
-  // total item and total price
-  // useEffect(() => {
-  //   const qty = cartItem.reduce((prev, curr) => {
-  //     return prev + curr.quantity
-  //   }, 0)
-  //   setTotalQty(qty)
-
-  //   const tPrice = cartItem.reduce((prev,curr) => {
-  //     return prev + curr.productId.price * curr.quantity
-  //   },0)
-
-  //   setTotalPrice(tPrice)
-  // }, [cartItem])
 
   return (
     <header className='h-29 lg:h-28 lg:shadow-md sticky top-0 z-40 flex flex-col justify-center bg-white'>

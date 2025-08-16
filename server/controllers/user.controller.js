@@ -187,7 +187,7 @@ export async function logoutController(req, res) {
     const userId = req.userId; // which is coming from the auth middleware
     if (!userId) {
       return res.status(400).json({
-        message: "User not foundddd",
+        message: "User not found",
         error: true,
         success: false,
       });

@@ -107,8 +107,8 @@ const ProductListPage = () => {
           </div>
           <div>
             <div className='min-h-[80vh] max-h-[80vh] overflow-y-auto relative'>
-              <div className='grid p-4 gap-4 justify-items-center
-               grid-cols-[repeat(auto-fit,minmax(200px,1fr))]'>
+              <div className='grid p-4 gap-6 justify-center
+               grid-cols-[repeat(auto-fill,minmax(220px,max-content))]'>
                 {
                   data.map((p, index) => {
 
