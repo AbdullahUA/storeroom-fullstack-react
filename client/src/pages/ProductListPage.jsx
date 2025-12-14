@@ -102,7 +102,7 @@ const ProductListPage = () => {
 
         {/* product */}
         <div className=' sticky top-20'>
-          <div className='bg-white shadow-md p-2 z-10'>
+          <div className='bg-white shadow-md p-4 z-10'>
             <h3 className='font-semibold'>{subCategoryName}</h3>
           </div>
           <div>

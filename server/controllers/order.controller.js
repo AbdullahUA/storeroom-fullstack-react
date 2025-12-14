@@ -102,6 +102,15 @@ export const PaymentController = async (req, res) => {
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
     };
     const session = await Stripe.checkout.sessions.create(params);
+        // remove all details from the cart
+
+    const removeCartItems = await CartProductModel.deleteMany({
+      userId: userId,
+    });
+    const updateInUser = await UserModel.updateOne(
+      { _id: userId },
+      { shopping_cart: [] }
+    );
 
     return res.status(200).json(session);
   } catch (error) {
